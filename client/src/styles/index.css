@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand-blue: #1a73e8;
+  --brand-dark: #072f64;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img,
+video,
+iframe {
+  max-width: 100%;
+}
+
+/* Mobile: up to 768px */
+@media (max-width: 768px) {
+  .site-main {
+    padding-top: 1rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+
+  .hero-section {
+    border-radius: 0.9rem;
+  }
+
+  .hero-title {
+    font-size: 2rem !important;
+    line-height: 1.15 !important;
+  }
+
+  .hero-actions a {
+    width: 100%;
+  }
+
+  .hero-image {
+    height: 220px !important;
+  }
+
+  .feature-grid {
+    gap: 0.9rem !important;
+  }
+}
+
+/* Tablet: 768px to 1024px */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .site-main {
+    padding-top: 1.5rem !important;
+    padding-bottom: 2rem !important;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .hero-title {
+    font-size: 2.35rem !important;
+    line-height: 1.15 !important;
+  }
+
+  .hero-image {
+    height: 360px !important;
+  }
+
+  .feature-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 1rem !important;
+  }
+}

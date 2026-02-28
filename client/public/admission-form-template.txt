@@ -1,0 +1,30 @@
+JMS PUBLIC SCHOOL CHAUDIHA
+Admission Form Template
+
+Student Information
+1. Full Name:
+2. Date of Birth:
+3. Gender:
+4. Class Applying For:
+5. Previous School Name:
+
+Parent / Guardian Information
+1. Father Name:
+2. Mother Name:
+3. Guardian Name (if applicable):
+4. Contact Number:
+5. Email Address:
+6. Residential Address:
+
+Documents Checklist
+[ ] Birth Certificate
+[ ] Previous School Report Card
+[ ] Transfer Certificate (if applicable)
+[ ] Passport Size Photographs
+[ ] Address Proof
+
+Declaration
+I/We confirm that the above information is correct to the best of our knowledge.
+
+Parent/Guardian Signature:
+Date:
