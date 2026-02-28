@@ -6,7 +6,11 @@ dotenv.config();
 
 const seedAdmin = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/jms_school");
+    if (!process.env.MONGO_URI) {
+      throw new Error("MONGO_URI is required to seed admin.");
+    }
+
+    await mongoose.connect(process.env.MONGO_URI);
 
     const email = process.env.ADMIN_EMAIL || "admin@jmsschool.com";
     const password = process.env.ADMIN_PASSWORD || "Admin@123";
