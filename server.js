@@ -60,6 +60,9 @@ app.get("/api/health", (_req, res) => {
 });
 
 app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/public", require("./routes/publicRoutes"));
+app.use("/api/portal", require("./routes/portalRoutes"));
+app.use("/api/management", require("./routes/managementRoutes"));
 app.use("/api/gallery", require("./routes/galleryRoutes"));
 app.use("/api/notices", require("./routes/noticeRoutes"));
 app.use("/api/events", require("./routes/eventRoutes"));

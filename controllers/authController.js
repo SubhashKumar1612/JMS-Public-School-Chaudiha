@@ -1,7 +1,8 @@
 const User = require("../models/User");
 const generateToken = require("../utils/generateToken");
+const asyncHandler = require("../middleware/asyncHandler");
 
-const loginAdmin = async (req, res) => {
+const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -9,7 +10,7 @@ const loginAdmin = async (req, res) => {
   }
 
   const user = await User.findOne({ email: email.toLowerCase() });
-  if (!user || !(await user.matchPassword(password))) {
+  if (!user || user.status !== "active" || !(await user.matchPassword(password))) {
     return res.status(401).json({ message: "Invalid credentials." });
   }
 
@@ -30,4 +31,7 @@ const getMe = async (req, res) => {
   res.json(req.user);
 };
 
-module.exports = { loginAdmin, getMe };
+module.exports = {
+  loginUser: asyncHandler(loginUser),
+  getMe: asyncHandler(getMe),
+};

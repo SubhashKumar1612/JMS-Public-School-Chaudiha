@@ -1,4 +1,5 @@
 const ContactMessage = require("../models/ContactMessage");
+const asyncHandler = require("../middleware/asyncHandler");
 
 const submitContactForm = async (req, res) => {
   const { name, email, message } = req.body;
@@ -15,4 +16,19 @@ const getMessages = async (_req, res) => {
   res.json(messages);
 };
 
-module.exports = { submitContactForm, getMessages };
+const deleteMessage = async (req, res) => {
+  const message = await ContactMessage.findById(req.params.id);
+
+  if (!message) {
+    return res.status(404).json({ message: "Contact message not found." });
+  }
+
+  await message.deleteOne();
+  res.json({ message: "Contact message deleted successfully." });
+};
+
+module.exports = {
+  submitContactForm: asyncHandler(submitContactForm),
+  getMessages: asyncHandler(getMessages),
+  deleteMessage: asyncHandler(deleteMessage),
+};

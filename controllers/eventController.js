@@ -1,4 +1,5 @@
 const Event = require("../models/Event");
+const asyncHandler = require("../middleware/asyncHandler");
 
 const getEvents = async (_req, res) => {
   const events = await Event.find().sort({ eventDate: 1 });
@@ -28,4 +29,9 @@ const deleteEvent = async (req, res) => {
   res.json({ message: "Event deleted successfully." });
 };
 
-module.exports = { getEvents, createEvent, updateEvent, deleteEvent };
+module.exports = {
+  getEvents: asyncHandler(getEvents),
+  createEvent: asyncHandler(createEvent),
+  updateEvent: asyncHandler(updateEvent),
+  deleteEvent: asyncHandler(deleteEvent),
+};

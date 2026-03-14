@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
 
 export default function AdminLoginPage() {
-  const { login, loading } = useAuth();
+  const { login, logout, loading } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: "", password: "" });
 
@@ -13,7 +13,12 @@ export default function AdminLoginPage() {
     if (!form.email || !form.password) return toast.error("Email and password are required.");
 
     try {
-      await login(form.email, form.password);
+      const data = await login(form.email, form.password);
+      if (data.user.role !== "admin") {
+        logout();
+        toast.error("This login page is for administrators only.");
+        return;
+      }
       toast.success("Login successful.");
       navigate("/admin/dashboard");
     } catch (error) {

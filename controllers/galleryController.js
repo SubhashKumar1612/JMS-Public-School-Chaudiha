@@ -1,6 +1,7 @@
 const Gallery = require("../models/Gallery");
 const cloudinary = require("../config/cloudinary");
 const uploadBufferToCloudinary = require("../utils/cloudinaryUpload");
+const asyncHandler = require("../middleware/asyncHandler");
 
 const isCloudinaryConfigured = () =>
   Boolean(
@@ -35,6 +36,20 @@ const uploadGalleryPhotos = async (req, res) => {
   res.status(201).json(savedPhotos);
 };
 
+const updateGalleryPhoto = async (req, res) => {
+  const photo = await Gallery.findByIdAndUpdate(
+    req.params.id,
+    { title: req.body.title || "School Moment" },
+    { new: true, runValidators: true }
+  );
+
+  if (!photo) {
+    return res.status(404).json({ message: "Photo not found." });
+  }
+
+  res.json(photo);
+};
+
 const deleteGalleryPhoto = async (req, res) => {
   const photo = await Gallery.findById(req.params.id);
   if (!photo) {
@@ -49,4 +64,9 @@ const deleteGalleryPhoto = async (req, res) => {
   res.json({ message: "Photo deleted successfully." });
 };
 
-module.exports = { getGalleryPhotos, uploadGalleryPhotos, deleteGalleryPhoto };
+module.exports = {
+  getGalleryPhotos: asyncHandler(getGalleryPhotos),
+  uploadGalleryPhotos: asyncHandler(uploadGalleryPhotos),
+  updateGalleryPhoto: asyncHandler(updateGalleryPhoto),
+  deleteGalleryPhoto: asyncHandler(deleteGalleryPhoto),
+};

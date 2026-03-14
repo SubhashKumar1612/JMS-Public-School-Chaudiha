@@ -17,6 +17,8 @@ body,
 body {
   margin: 0;
   overflow-x: hidden;
+  background: #f8fafc;
+  color: #0f172a;
 }
 
 * {
@@ -27,6 +29,22 @@ img,
 video,
 iframe {
   max-width: 100%;
+}
+
+.dark body {
+  background: #020617;
+  color: #e2e8f0;
+}
+
+a {
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
 }
 
 /* Mobile: up to 768px */

@@ -2,6 +2,7 @@ const express = require("express");
 const {
   getGalleryPhotos,
   uploadGalleryPhotos,
+  updateGalleryPhoto,
   deleteGalleryPhoto,
 } = require("../controllers/galleryController");
 const { protect, authorize } = require("../middleware/auth");
@@ -17,6 +18,7 @@ router.post(
   upload.array("images", 10),
   uploadGalleryPhotos
 );
+router.put("/:id", protect, authorize("admin"), updateGalleryPhoto);
 router.delete("/:id", protect, authorize("admin"), deleteGalleryPhoto);
 
 module.exports = router;

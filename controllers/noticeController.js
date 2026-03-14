@@ -1,4 +1,5 @@
 const Notice = require("../models/Notice");
+const asyncHandler = require("../middleware/asyncHandler");
 
 const getNotices = async (_req, res) => {
   const notices = await Notice.find().sort({ isPinned: -1, createdAt: -1 });
@@ -28,4 +29,9 @@ const deleteNotice = async (req, res) => {
   res.json({ message: "Notice deleted successfully." });
 };
 
-module.exports = { getNotices, createNotice, updateNotice, deleteNotice };
+module.exports = {
+  getNotices: asyncHandler(getNotices),
+  createNotice: asyncHandler(createNotice),
+  updateNotice: asyncHandler(updateNotice),
+  deleteNotice: asyncHandler(deleteNotice),
+};

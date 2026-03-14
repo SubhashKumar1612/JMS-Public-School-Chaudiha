@@ -5,10 +5,15 @@ import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
 import AcademicsPage from "./pages/AcademicsPage";
 import AdmissionsPage from "./pages/AdmissionsPage";
+import FeesPage from "./pages/FeesPage";
+import DownloadsPage from "./pages/DownloadsPage";
+import FacultyPage from "./pages/FacultyPage";
 import GalleryPage from "./pages/GalleryPage";
 import EventsPage from "./pages/EventsPage";
 import NoticesPage from "./pages/NoticesPage";
 import ContactPage from "./pages/ContactPage";
+import PortalLoginPage from "./pages/portal/PortalLoginPage";
+import PortalDashboardPage from "./pages/portal/PortalDashboardPage";
 import AdminLoginPage from "./pages/admin/AdminLoginPage";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import ProtectedRoute from "./components/common/ProtectedRoute";
@@ -24,14 +29,33 @@ function App() {
           <Route path="/" element={<PageTransition><HomePage /></PageTransition>} />
           <Route path="/about" element={<PageTransition><AboutPage /></PageTransition>} />
           <Route path="/academics" element={<PageTransition><AcademicsPage /></PageTransition>} />
+          <Route path="/faculty" element={<PageTransition><FacultyPage /></PageTransition>} />
           <Route path="/admissions" element={<PageTransition><AdmissionsPage /></PageTransition>} />
+          <Route path="/fees" element={<PageTransition><FeesPage /></PageTransition>} />
+          <Route path="/downloads" element={<PageTransition><DownloadsPage /></PageTransition>} />
           <Route path="/gallery" element={<PageTransition><GalleryPage /></PageTransition>} />
           <Route path="/events" element={<PageTransition><EventsPage /></PageTransition>} />
           <Route path="/notices" element={<PageTransition><NoticesPage /></PageTransition>} />
           <Route path="/contact" element={<PageTransition><ContactPage /></PageTransition>} />
         </Route>
+        <Route path="/portal/login" element={<PageTransition><PortalLoginPage /></PageTransition>} />
+        <Route
+          path="/portal/dashboard"
+          element={
+            <ProtectedRoute roles={["student", "teacher", "parent"]}>
+              <PageTransition><PortalDashboardPage /></PageTransition>
+            </ProtectedRoute>
+          }
+        />
         <Route path="/admin/login" element={<PageTransition><AdminLoginPage /></PageTransition>} />
-        <Route path="/admin/dashboard" element={<ProtectedRoute><PageTransition><AdminDashboardPage /></PageTransition></ProtectedRoute>} />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute roles={["admin"]} redirectTo="/admin/login">
+              <PageTransition><AdminDashboardPage /></PageTransition>
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </AnimatePresence>

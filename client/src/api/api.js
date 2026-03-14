@@ -1,7 +1,9 @@
 import axios from "axios";
+const VITE_API_URL="https://jms-public-school-chaudiha.onrender.com";
+const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:5000").replace(/\/$/, "");
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api",
+  baseURL: `${API_URL}/api`,
 });
 
 api.interceptors.request.use((config) => {

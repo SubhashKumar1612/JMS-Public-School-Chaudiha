@@ -7,6 +7,7 @@
     "dev": "nodemon server.js",
     "start": "node server.js",
     "seed:admin": "node seed/createAdmin.js",
+    "seed:platform": "node seed/platformDemo.js",
     "client": "npm run dev --prefix client",
     "all": "concurrently \"npm run dev\" \"npm run client\""
   },

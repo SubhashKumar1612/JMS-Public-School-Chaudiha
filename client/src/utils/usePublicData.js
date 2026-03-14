@@ -5,17 +5,29 @@ const defaultContent = {
   schoolName: "JMS Public School Chaudiha",
   tagline: "Nurturing Minds, Building Futures",
   aboutHistory: "",
+  aboutImageUrl: "",
   mission: "",
   vision: "",
+  principalName: "Dr. A. Sharma",
   principalMessage: "",
+  principalPhotoUrl: "",
+  facultyIntro: "",
+  admissionsInfo: "",
   contactEmail: "",
   contactPhone: "",
   address: "",
+  contactImageUrl: "",
   googleMapEmbedUrl: "",
   heroImageUrl: "",
   heroImagePublicId: "",
   admissionTemplateUrl: "",
   admissionTemplateName: "",
+  feeStructure: [],
+  academicPrograms: [],
+  downloads: [],
+  facilities: [],
+  highlights: [],
+  testimonials: [],
 };
 
 export default function usePublicData() {
@@ -24,33 +36,45 @@ export default function usePublicData() {
   const [gallery, setGallery] = useState([]);
   const [events, setEvents] = useState([]);
   const [notices, setNotices] = useState([]);
+  const [faculty, setFaculty] = useState([]);
+  const [materials, setMaterials] = useState([]);
+  const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
-    const fetchAll = async () => {
+    const fetchOverview = async () => {
       try {
-        const [contentRes, galleryRes, eventRes, noticeRes] = await Promise.all([
-          api.get("/content"),
-          api.get("/gallery"),
-          api.get("/events"),
-          api.get("/notices"),
-        ]);
-
-        setContent(contentRes.data || defaultContent);
-        setGallery(galleryRes.data || []);
-        setEvents(eventRes.data || []);
-        setNotices(noticeRes.data || []);
+        const { data } = await api.get("/public/overview");
+        setContent(data.content || defaultContent);
+        setGallery(data.gallery || []);
+        setEvents(data.events || []);
+        setNotices(data.notices || []);
+        setFaculty(data.faculty || []);
+        setMaterials(data.materials || []);
+        setNotifications(data.notifications || []);
       } catch (_error) {
         setContent(defaultContent);
         setGallery([]);
         setEvents([]);
         setNotices([]);
+        setFaculty([]);
+        setMaterials([]);
+        setNotifications([]);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchAll();
+    fetchOverview();
   }, []);
 
-  return { loading, content, gallery, events, notices };
+  return {
+    loading,
+    content,
+    gallery,
+    events,
+    notices,
+    faculty,
+    materials,
+    notifications,
+  };
 }
