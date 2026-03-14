@@ -14,8 +14,15 @@ connectDB();
 
 const app = express();
 
+const defaultAllowedOrigins = [
+  "http://localhost:5173",
+  "https://jmspublicschool.netlify.app",
+];
+
 const allowedOrigins = (
-  process.env.CORS_ALLOWED_ORIGINS || process.env.CLIENT_URL || "http://localhost:5173"
+  process.env.CORS_ALLOWED_ORIGINS ||
+  process.env.CLIENT_URL ||
+  defaultAllowedOrigins.join(",")
 )
   .split(",")
   .map((origin) => origin.trim())
