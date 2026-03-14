@@ -1462,14 +1462,22 @@ export default function AdminDashboardPage() {
                   <option key={teacher._id} value={teacher._id}>{getTeacherLabel(teacher)}</option>
                 ))}
               </select>
-              <button onClick={createAssignmentRecord} className="bg-primary-700 text-white px-4 py-2 rounded-lg">Publish Assignment</button>
+              <button onClick={saveAssignmentRecord} className="bg-primary-700 text-white px-4 py-2 rounded-lg">
+                {editingAssignmentId ? "Update Assignment" : "Publish Assignment"}
+              </button>
             </div>
             <div className="space-y-3">
               {assignments.map((item) => (
-                <article key={item._id} className="bg-white p-4 rounded-xl shadow-soft">
-                  <h3 className="font-semibold">{item.title}</h3>
-                  <p className="text-sm text-slate-600">{item.subject}</p>
-                  <p className="text-sm text-slate-500">{new Date(item.dueDate).toLocaleDateString()}</p>
+                <article key={item._id} className="bg-white p-4 rounded-xl shadow-soft flex justify-between gap-3">
+                  <div>
+                    <h3 className="font-semibold">{item.title}</h3>
+                    <p className="text-sm text-slate-600">{item.subject}</p>
+                    <p className="text-sm text-slate-500">{new Date(item.dueDate).toLocaleDateString()}</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <button onClick={() => editAssignmentRecord(item)} className="rounded-lg bg-amber-100 px-3 py-1 text-amber-900">Edit</button>
+                    <button onClick={() => deleteAssignmentRecord(item._id)} className="rounded-lg bg-red-100 px-3 py-1 text-red-700">Delete</button>
+                  </div>
                 </article>
               ))}
             </div>
@@ -1504,14 +1512,22 @@ export default function AdminDashboardPage() {
                 <option value="absent">Absent</option>
                 <option value="late">Late</option>
               </select>
-              <button onClick={markAttendanceRecord} className="bg-primary-700 text-white px-4 py-2 rounded-lg">Save Attendance</button>
+              <button onClick={markAttendanceRecord} className="bg-primary-700 text-white px-4 py-2 rounded-lg">
+                {editingAttendanceId ? "Update Attendance" : "Save Attendance"}
+              </button>
             </div>
             <div className="space-y-3">
               {attendanceRecords.map((item) => (
-                <article key={item._id} className="bg-white p-4 rounded-xl shadow-soft">
-                  <h3 className="font-semibold">{getStudentLabel(item.student)}</h3>
-                  <p className="text-sm text-slate-600">{new Date(item.date).toLocaleDateString()}</p>
-                  <p className="text-sm text-slate-500 capitalize">{item.status}</p>
+                <article key={item._id} className="bg-white p-4 rounded-xl shadow-soft flex justify-between gap-3">
+                  <div>
+                    <h3 className="font-semibold">{getStudentLabel(item.student)}</h3>
+                    <p className="text-sm text-slate-600">{new Date(item.date).toLocaleDateString()}</p>
+                    <p className="text-sm text-slate-500 capitalize">{item.status}</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <button onClick={() => editAttendanceRecord(item)} className="rounded-lg bg-amber-100 px-3 py-1 text-amber-900">Edit</button>
+                    <button onClick={() => deleteAttendanceRecord(item._id)} className="rounded-lg bg-red-100 px-3 py-1 text-red-700">Delete</button>
+                  </div>
                 </article>
               ))}
             </div>
@@ -1538,14 +1554,22 @@ export default function AdminDashboardPage() {
               <input className="w-full border rounded-lg px-3 py-2" placeholder="Term" value={resultForm.term} onChange={(event) => setResultForm({ ...resultForm, term: event.target.value })} />
               <input className="w-full border rounded-lg px-3 py-2" placeholder="Percentage" value={resultForm.percentage} onChange={(event) => setResultForm({ ...resultForm, percentage: event.target.value })} />
               <input className="w-full border rounded-lg px-3 py-2" placeholder="Grade" value={resultForm.grade} onChange={(event) => setResultForm({ ...resultForm, grade: event.target.value })} />
-              <button onClick={saveResultRecord} className="bg-primary-700 text-white px-4 py-2 rounded-lg">Save Result</button>
+              <button onClick={saveResultRecord} className="bg-primary-700 text-white px-4 py-2 rounded-lg">
+                {editingResultId ? "Update Result" : "Save Result"}
+              </button>
             </div>
             <div className="space-y-3">
               {results.map((item) => (
-                <article key={item._id} className="bg-white p-4 rounded-xl shadow-soft">
-                  <h3 className="font-semibold">{item.examName}</h3>
-                  <p className="text-sm text-slate-600">{item.term}</p>
-                  <p className="text-sm text-slate-500">{item.percentage}% | {item.grade}</p>
+                <article key={item._id} className="bg-white p-4 rounded-xl shadow-soft flex justify-between gap-3">
+                  <div>
+                    <h3 className="font-semibold">{item.examName}</h3>
+                    <p className="text-sm text-slate-600">{item.term}</p>
+                    <p className="text-sm text-slate-500">{item.percentage}% | {item.grade}</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <button onClick={() => editResultRecord(item)} className="rounded-lg bg-amber-100 px-3 py-1 text-amber-900">Edit</button>
+                    <button onClick={() => deleteResultRecord(item._id)} className="rounded-lg bg-red-100 px-3 py-1 text-red-700">Delete</button>
+                  </div>
                 </article>
               ))}
             </div>
@@ -1572,14 +1596,22 @@ export default function AdminDashboardPage() {
                   <option key={teacher._id} value={teacher._id}>{getTeacherLabel(teacher)}</option>
                 ))}
               </select>
-              <button onClick={createMaterialRecord} className="bg-primary-700 text-white px-4 py-2 rounded-lg">Add Material</button>
+              <button onClick={saveMaterialRecord} className="bg-primary-700 text-white px-4 py-2 rounded-lg">
+                {editingMaterialId ? "Update Material" : "Add Material"}
+              </button>
             </div>
             <div className="space-y-3">
               {materials.map((item) => (
-                <article key={item._id} className="bg-white p-4 rounded-xl shadow-soft">
-                  <h3 className="font-semibold">{item.title}</h3>
-                  <p className="text-sm text-slate-600">{item.subject}</p>
-                  <p className="text-sm text-slate-500">{item.fileUrl || "No file URL"}</p>
+                <article key={item._id} className="bg-white p-4 rounded-xl shadow-soft flex justify-between gap-3">
+                  <div>
+                    <h3 className="font-semibold">{item.title}</h3>
+                    <p className="text-sm text-slate-600">{item.subject}</p>
+                    <p className="text-sm text-slate-500">{item.fileUrl || "No file URL"}</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <button onClick={() => editMaterialRecord(item)} className="rounded-lg bg-amber-100 px-3 py-1 text-amber-900">Edit</button>
+                    <button onClick={() => deleteMaterialRecord(item._id)} className="rounded-lg bg-red-100 px-3 py-1 text-red-700">Delete</button>
+                  </div>
                 </article>
               ))}
             </div>
