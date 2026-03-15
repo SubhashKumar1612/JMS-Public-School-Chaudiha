@@ -32,10 +32,21 @@ const {
   createMaterial,
   updateMaterial,
   deleteMaterial,
+  listFeeStructures,
+  createFeeStructure,
+  updateFeeStructure,
+  deleteFeeStructure,
+  assignFeeStructureToStudent,
+  reviseStudentFeePlanRecord,
+  listFeePayments,
+  createFeePayment,
+  updateFeePayment,
+  deleteFeePayment,
+  getStudentFeeDetails,
+  getFeeReports,
+  exportFeeTransactions,
+  deleteFeeSessionHistory,
   listFees,
-  createFeeRecord,
-  updateFeeRecord,
-  deleteFeeRecord,
   listNotifications,
   createNotification,
   markAttendance,
@@ -91,9 +102,20 @@ router.put("/materials/:id", authorize("admin", "teacher"), updateMaterial);
 router.delete("/materials/:id", authorize("admin", "teacher"), deleteMaterial);
 
 router.get("/fees", authorize("admin"), listFees);
-router.post("/fees", authorize("admin"), createFeeRecord);
-router.put("/fees/:id", authorize("admin"), updateFeeRecord);
-router.delete("/fees/:id", authorize("admin"), deleteFeeRecord);
+router.get("/fees/reports", authorize("admin"), getFeeReports);
+router.get("/fee-structures", authorize("admin"), listFeeStructures);
+router.post("/fee-structures", authorize("admin"), createFeeStructure);
+router.put("/fee-structures/:id", authorize("admin"), updateFeeStructure);
+router.delete("/fee-structures/:id", authorize("admin"), deleteFeeStructure);
+router.put("/students/:id/fee-structure", authorize("admin"), assignFeeStructureToStudent);
+router.post("/students/:id/fee-plan/revise", authorize("admin"), reviseStudentFeePlanRecord);
+router.get("/students/:id/fees", authorize("admin"), getStudentFeeDetails);
+router.get("/fee-payments", authorize("admin"), listFeePayments);
+router.get("/fee-payments/export", authorize("admin"), exportFeeTransactions);
+router.post("/fee-payments", authorize("admin"), createFeePayment);
+router.put("/fee-payments/:id", authorize("admin"), updateFeePayment);
+router.delete("/fee-payments/:id", authorize("admin"), deleteFeePayment);
+router.post("/fee-payments/session-history/delete", authorize("admin"), deleteFeeSessionHistory);
 
 router.get("/notifications", authorize("admin", "teacher"), listNotifications);
 router.post("/notifications", authorize("admin", "teacher"), createNotification);

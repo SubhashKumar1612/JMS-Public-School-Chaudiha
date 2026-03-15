@@ -45,7 +45,7 @@ export default function PortalDashboardPage() {
             <p className="mt-2 text-slate-600 dark:text-slate-300">
               {dashboard.role === "student" && "Track your academics, attendance, homework, and fee status."}
               {dashboard.role === "teacher" && "Manage classes, assignments, study materials, and outcomes."}
-              {dashboard.role === "parent" && "Monitor your child’s school life, fees, and communication updates."}
+              {dashboard.role === "parent" && "Monitor your child's school life, fees, and communication updates."}
             </p>
           </div>
           <button onClick={signOut} className="rounded-xl bg-red-600 px-4 py-3 text-white">Logout</button>
@@ -60,11 +60,13 @@ export default function PortalDashboardPage() {
 }
 
 function StudentDashboard({ dashboard }) {
+  const feeSummary = dashboard.feeSummary || {};
+
   return (
     <>
       <section className="mt-8 grid gap-5 md:grid-cols-4">
         <MetricCard label="Attendance" value={`${dashboard.profile.attendancePercentage || 0}%`} />
-        <MetricCard label="Fee Status" value={dashboard.profile.feeStatus || "due"} />
+        <MetricCard label="Fee Status" value={feeSummary.paymentStatus || dashboard.profile.feeStatus || "pending"} />
         <MetricCard label="Assignments" value={String(dashboard.assignments.length)} />
         <MetricCard label="Results" value={String(dashboard.results.length)} />
       </section>
@@ -72,7 +74,7 @@ function StudentDashboard({ dashboard }) {
         <ListPanel title="Assignments" items={dashboard.assignments.map((item) => `${item.title} · ${item.subject}`)} />
         <ListPanel title="Study Materials" items={dashboard.materials.map((item) => `${item.title} · ${item.subject}`)} />
         <ListPanel title="Recent Notices" items={dashboard.notices.map((item) => item.title)} />
-        <ListPanel title="Fee Records" items={dashboard.fees.map((item) => `${item.term} · ${item.status}`)} />
+        <FeeHistoryPanel feeSummary={feeSummary} />
       </section>
     </>
   );
@@ -104,12 +106,12 @@ function ParentDashboard({ dashboard }) {
         <MetricCard label="Children" value={String(dashboard.profile.children.length)} />
         <MetricCard label="Attendance Logs" value={String(dashboard.attendance.length)} />
         <MetricCard label="Results" value={String(dashboard.results.length)} />
-        <MetricCard label="Fee Records" value={String(dashboard.fees.length)} />
+        <MetricCard label="Fee Records" value={String(dashboard.feeSummaries.length)} />
       </section>
       <section className="mt-8 grid gap-5 xl:grid-cols-2">
         <ListPanel title="Attendance" items={dashboard.attendance.map((item) => `${item.student?.rollNumber || "Child"} · ${item.status}`)} />
         <ListPanel title="Exam Results" items={dashboard.results.map((item) => `${item.examName} · ${item.grade || item.percentage + "%"}`)} />
-        <ListPanel title="Fee History" items={dashboard.fees.map((item) => `${item.term} · ${item.status}`)} />
+        <ParentFeePanel feeSummaries={dashboard.feeSummaries} />
         <ListPanel title="School Notifications" items={dashboard.notices.map((item) => item.title)} />
       </section>
     </>
@@ -136,6 +138,61 @@ function ListPanel({ title, items }) {
           items.slice(0, 6).map((item) => (
             <div key={`${title}-${item}`} className="rounded-2xl bg-slate-50 px-4 py-3 dark:bg-slate-900">
               <p className="text-sm">{item}</p>
+            </div>
+          ))
+        )}
+      </div>
+    </article>
+  );
+}
+
+function FeeHistoryPanel({ feeSummary }) {
+  const rows = feeSummary?.paymentHistory || [];
+
+  return (
+    <article className="rounded-3xl border border-slate-200 bg-white p-6 shadow-soft dark:bg-slate-950 dark:border-slate-800">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h2 className="font-display text-2xl">Fee Details</h2>
+        <span className="text-sm text-slate-500">
+          Total INR {feeSummary?.totalFee || 0} · Paid INR {feeSummary?.amountPaid || 0} · Balance INR {feeSummary?.remainingBalance || 0}
+        </span>
+      </div>
+      <div className="mt-4 space-y-3">
+        {rows.length === 0 ? (
+          <p className="text-slate-500">No payment history available yet.</p>
+        ) : (
+          rows.slice(0, 6).map((item) => (
+            <div key={item._id} className="rounded-2xl bg-slate-50 px-4 py-3 dark:bg-slate-900">
+              <p className="text-sm font-medium">{item.receiptNumber}</p>
+              <p className="text-sm text-slate-600 dark:text-slate-300">
+                {new Date(item.paymentDate).toLocaleDateString()} · {item.paymentMonth} · {item.paymentMethod}
+              </p>
+              <p className="text-sm text-slate-600 dark:text-slate-300">
+                Paid INR {item.amountPaid} · Remaining INR {item.remainingBalance}
+              </p>
+            </div>
+          ))
+        )}
+      </div>
+    </article>
+  );
+}
+
+function ParentFeePanel({ feeSummaries }) {
+  return (
+    <article className="rounded-3xl border border-slate-200 bg-white p-6 shadow-soft dark:bg-slate-950 dark:border-slate-800">
+      <h2 className="font-display text-2xl">Fee History</h2>
+      <div className="mt-4 space-y-3">
+        {feeSummaries.length === 0 ? (
+          <p className="text-slate-500">No fee records yet.</p>
+        ) : (
+          feeSummaries.map((item) => (
+            <div key={item.studentId} className="rounded-2xl bg-slate-50 px-4 py-3 dark:bg-slate-900">
+              <p className="font-medium">{item.studentName} {item.rollNumber ? `(${item.rollNumber})` : ""}</p>
+              <p className="text-sm text-slate-600 dark:text-slate-300">
+                Total INR {item.totalFee} · Paid INR {item.amountPaid} · Balance INR {item.remainingBalance}
+              </p>
+              <p className="text-sm capitalize text-slate-600 dark:text-slate-300">{item.paymentStatus}</p>
             </div>
           ))
         )}
